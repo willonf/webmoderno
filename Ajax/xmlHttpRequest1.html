@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='UTF-8'>
+    <title>XMLHttpRequest #01</title>
+    <link rel='stylesheet' href='css/estilo.css'>
+</head>
+
+<body class="conteudo exercicio">
+    <h1>Estados</h1>
+
+    <script>
+
+function createTable(estados){
+            const linhas = estados.map(estado => {
+                    const tr = document.createElement('tr')
+
+                    const tdId = document.createElement('td');
+                    tdId.innerHTML = estado.id;
+
+                    const tdNome = document.createElement('td');
+                    tdNome.innerHTML = estado.nome;
+
+                    const tdSigla = document.createElement('td');
+                    tdSigla.innerHTML = estado.sigla;
+                    
+                    tr.appendChild(tdId, tdNome, tdSigla);
+                    tr.appendChild(tdNome);
+                    tr.appendChild(tdSigla);
+                    return tr;
+                })
+                const tabela = document.createElement('table');
+                linhas.forEach(linha => tabela.appendChild(linha));
+                document.body.appendChild(tabela); 
+        }
+
+
+        const request = {
+            url: "dados/estados.json",
+            method: "get",
+            sucess(response) {
+                const estados = JSON.parse(response);
+                createTable(estados);
+                
+            },
+            err(e) {
+                const msg = document.createTextNode(`${e.code}: ${e.text}`);
+                document.body.appendChild(msg);
+            }
+        }
+
+        function ajax(config) {
+            // XMLHttpRequest é um objeto utilizado para interação com servidores de dados
+            const xhr = new XMLHttpRequest();
+
+            // O método ".open()" é usado para inicializar uma request (requisição) 
+            // Ele possui 5 parâmetros: o tipo de método, a URL, se é assíncrono (true) ou não(false), user e password.
+            xhr.open(config.method, config.url, true);
+
+            // "onload" é o evento de "carregamento da página". Aqui haverá uma ação ao carregar a página
+            xhr.onload = e => {
+                if (xhr.status === 200) {
+                    // Caso a conexão apresente código 200, a função "sucess()" do objeto "config" receberá a response (resposta) da requisição
+                    config.sucess(xhr.response);
+                }
+
+                // Caso a conexão apresente código maior ou igual a 400,
+                // a função "err()" do objeto "config" receberá um objeto "erro" contendo o código e o texto de status do error
+                else if (xhr.status >= 400) {
+                    const erro = {
+                        code: xhr.status,
+                        text: xhr.statusText
+                    }
+                    config.err(erro);
+                }
+            }
+
+            // A função ".send()" envia a request
+            xhr.send();
+        }
+
+        
+        ajax(request);
+    </script>
+</body>
