@@ -49,6 +49,25 @@
     </form>
 
     <script>
-        // ...
+        $('#feira').addClass('destaque').removeClass('destaque')
+        $('li').addClass('destaque')
+        $('[wm-obrigatorio]').removeClass('destaque')
+        $('li.opcional').removeClass('destaque')
+        $('div p span').addClass('destaque')
+        
+        // Filtros exclusivos do jQuery
+        $('li:first').css('border', 'solid 3px yellow') // fisrt: primeiro elemento
+        $('li:odd').css('border', 'solid 5px orange') // odd: elementos ímpares
+        $('li:gt(1)').css('border', 'solid 10px white') // gt: greater than. Maior que o indice passado
+        $('li:not(:last)').css('border', 'none') // Pegar todos menos o último
+        $('li:contains("r")').css('background-color', 'black') // Procurar elementos que tenham a letra r
+        
+        $('form *').hide()
+        $('form :text').show()
+        $('form :password').show()
+        $('form :checkbox').show()
+        $('form :radio').show()
+        $('form :file').show()
+
     </script>
 </body>
